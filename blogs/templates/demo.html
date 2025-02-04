@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <h1>{{ title }}</h1>
+    <ul>
+        {% for item in authors %}
+        <li>
+            {{ item.name|upper }}
+            <br />
+            Age : {{ item.age }}
+            <br />
+            Created_at: {{ item.created_at|date:"Y-m-d" }}
+            <br />
+            Updated_at{{ item.updated_at|date:"Y-m-d" }}
+
+        </li>
+
+
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
