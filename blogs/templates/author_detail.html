@@ -1,42 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base_author.html" %}
+{% block title %}Author Details{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ author.name }}</title>
-</head>
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h1 class="text-center mb-4">Author Details</h1>
 
-<body>
-    <h1>Author Details</h1>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name:</th>
+                <td>{{ author.name }}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{ author.email }}</td>
+            </tr>
+            <tr>
+                <th>Age:</th>
+                <td>{{ author.age }}</td>
+            </tr>
+            <tr>
+                <th>Created At:</th>
+                <td>{{ author.created_at|date:"F d, Y H:i" }}</td>
+            </tr>
+        </table>
 
-    <table>
-        <tr>
-            <th>Name : </th>
-            <td>{{ author.name }}</td>
-        </tr>
-        <tr>
-            <th>Email : </th>
-            <td>{{ author.email }}</td>
-        </tr>
-        <tr>
-            <th>Age : </th>
-            <td>{{ author.age }}</td>
-        </tr>
-        <tr>
-            <th>Created At : </th>
-            <td>{{ author.created_at|date:"F d, Y H:i" }}</td>
-        </tr>
-        <!-- <tr>
-            <th>Updated At : </th>
-            <td>{{ author.updated_at|date:"F d, Y H:i" }}</td>
-        </tr> -->
-    </table>
-
-    <br>
-    <a href="{% url 'author_list' %}">Back to List</a>
-    <a href="{% url 'author_delete' author.id %}">Delete</a>
-
-</body>
-
-</html>
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'author_list' %}" class="btn btn-secondary">Back to List</a>
+            <a href="{% url 'author_delete' author.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

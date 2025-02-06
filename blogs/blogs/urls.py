@@ -26,6 +26,7 @@ urlpatterns = [
     path('author/',include('author.urls')),
     path('demo/',demoblogview.demo_blog),
     path('blogs/',include('blog.urls')),
+    path('todo_list/',include('todo_list.urls')),
     
 
     

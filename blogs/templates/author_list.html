@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base_author.html" %}
+{% block title %}The Authors{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author List</title>
-</head>
-
-<body>
-    <h1>Author Lists</h1>
-    <ul>
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Author Lists</h1>
+    
+    <ul class="list-group">
         {% for author in authors %}
-        <li>
-            <a href="{{ author.id }}/">{{ author.name}}</a>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ author.id }}/" class="text-decoration-none">{{ author.name }}</a>
         </li>
         {% endfor %}
-
-
     </ul>
-    <a href="add/">Add new author</a>
 
+    <div class="text-center mt-4">
+        <a href="add/" class="btn btn-primary">Add New Author</a>
+    </div>
+</div>
+{% endblock content %}
 
-</body>
-
-</html>
+    

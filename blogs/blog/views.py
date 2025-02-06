@@ -41,3 +41,10 @@ def blog_delete(request,blog_id):
     return redirect('blog_list')
 
 
+def product_list(request):
+    products = [
+        {'name' : 'Laptop','price':1200},
+        {'name' : 'Phone','price':800}
+    ]
+    return  render(request,'products.html',{'products':products})
+
