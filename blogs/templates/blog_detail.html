@@ -1,20 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ blog.title}}</title>
-</head>
+{% block title %}{{ blog.title }}{% endblock %}
 
-<body>
-    <h1>{{ blog.title }}</h1>
-    <p> {{ blog.content }}</p>
-    <!-- <a href = "blogs/">Back to list</a>
-    <a href="{{ blog.id }}/delete/">Delete</a> -->
-    <a href="{% url 'blog_list' %}"> Back to List</a>
-    <a href="{% url 'blog_delete' blog.id %}">Delete</a>
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="card-title mb-3">{{ blog.title }}</h2>
+                        <div class="text-muted mb-3">
+                            <small>
+                                By: {{ blog.author.name|default:blog.author.user.username }} | 
+                                Posted on: {{ blog.created_at|date:"F d, Y" }}
+                            </small>
+                        </div>
+                        <div class="card-text mb-4" style="white-space: pre-wrap;">{{ blog.content }}</div>
+                        
+                        {% if blog.categories.all %}
+                        <div class="mb-3">
+                            <strong>Categories:</strong>
+                            {% for category in blog.categories.all %}
+                                <span class="badge bg-secondary">{{ category.name }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
 
-</body>
-
-</html>
+                        {% if user == blog.author.user or user.is_staff %}
+                        <div class="mt-4">
+                            <a href="{% url 'blog:blog_update' blog.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'blog:blog_delete' blog.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'blog:blog_list' %}" class="btn btn-primary btn-sm">Back to Blog List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

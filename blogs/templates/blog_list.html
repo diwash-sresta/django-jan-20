@@ -1,23 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog List</title>
-</head>
-<body>
-    <h1>Blog Posts</h1>
-    <ul>
-        {% for blog in blogs %}
-        <li>
-            <a href="{{ blog.id }}/">{{ blog.title}}</a>
-        </li>
-        {% endfor %}
-        
+{% extends 'base.html' %}
 
-    </ul>
-    <a href = "create/">Create New Blog</a>
+{% block content %}
+<div class="container mt-4">
+    <h2>Blog Posts</h2>
+    <a href="{% url 'blog:blog_create' %}" class="btn btn-primary mb-3">Create New Post</a>
 
-    
-</body>
-</html>
+    {% for blog in blogs %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ blog.title }}</h5>
+            <p class="text-muted small">By: {{ blog.author.name|default:blog.author.user.username }}</p>
+            <p class="card-text">{{ blog.content|truncatewords:30 }}</p>
+            <a href="{% url 'blog:blog_detail' blog.id %}" class="btn btn-primary">Read More</a>
+            {% if user == blog.author.user or user.is_staff %}
+            <a href="{% url 'blog:blog_update' blog.id %}" class="btn btn-secondary">Edit</a>
+            <a href="{% url 'blog:blog_delete' blog.id %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

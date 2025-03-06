@@ -1,20 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Blog</title>
-</head>
-<body>
-    <h1>Create new Blog</h1>
-    <form method ="POST">
-        {% csrf_token %}
-        <label>Title :</label>
-        <input type = "text" name="title" required><br>
-        <label>Content:</label>
-        <textarea name = "content" required></textarea><br>
-        <button type = "submit">Create</button>
-    </form>
-    <a href = "/blogs/">Back to list</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if blog %}Edit Blog{% else %}Create New Blog{% endif %}</h2>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" 
+                           value="{{ blog.title|default:'' }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea class="form-control" id="content" name="content" 
+                              rows="5" required>{{ blog.content|default:'' }}</textarea>
+                </div>
+
+                {% if not blog and not user.is_staff %}
+                <div class="mb-3">
+                    <label for="author_name" class="form-label">Your Name (as Author)</label>
+                    <input type="text" class="form-control" id="author_name" name="author_name" 
+                           value="{{ user.author.name|default:'' }}" 
+                           placeholder="Enter your name as author">
+                </div>
+                {% endif %}
+
+                {% if user.is_staff %}
+                <div class="mb-3">
+                    <label for="author" class="form-label">Author</label>
+                    <div class="input-group">
+                        <select class="form-control" id="author" name="author">
+                            <option value="">Select Author</option>
+                            {% for author in authors %}
+                            <option value="{{ author.id }}"
+                                {% if blog and blog.author == author %}selected{% endif %}
+                                {% if not blog and author.user == user %}selected{% endif %}>
+                                {{ author.name|default:author.user.username }} (ID: {{ author.id }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <a href="{% url 'author:author_create' %}?next={{ request.path }}" 
+                           class="btn btn-secondary">Add New Author</a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        {% if blog %}Update{% else %}Create{% endif %}
+                    </button>
+                    <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
